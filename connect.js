@@ -19,5 +19,13 @@ sendSock.addEventListener('open', (evt) => {
 });
 
 function send() {
-    sendSock.send('Hello World!');
+    var interval;
+
+    interval = setInterval(function(){
+        sendSock.send('Hello World!');
+    }, 20)
+
+    setTimeout(function(){
+        clearInterval(interval)
+    }, 600);
 }

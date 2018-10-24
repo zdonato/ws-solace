@@ -70,6 +70,7 @@ var TopicPublisher = function (solaceModule, topicName) {
                 vpnName:  vpn,
                 userName: username,
                 password: pass,
+                generateSendTimestamps: true
             });
         } catch (error) {
             publisher.log(error.toString());
