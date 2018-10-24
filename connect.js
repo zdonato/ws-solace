@@ -8,6 +8,6 @@ function connect() {
     });
 
     socket.addEventListener('message', (evt) => {
-        console.log(evt.data);
+        console.log(evt.data + 'at' + Date.now());
     });
 }

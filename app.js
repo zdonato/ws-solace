@@ -26,7 +26,7 @@ app.set('port', 8080);
 
 app.ws('/test', (ws, req) => {
     function send(msg) { 
-        subscriber.log('Received message: ' + msg.getBinaryAttachment());
+        subscriber.log('Received message: ' + msg.getBinaryAttachment() + 'at ' + Date.now() + '. Sent at ' + msg.getSenderTimestamp());
         ws.send(msg.getBinaryAttachment());
     }
 
