@@ -11,15 +11,14 @@ solace.SolclientFactory.init(factoryProps);
 
 solace.SolclientFactory.setLogLevel(solace.LogLevel.WARN);
 
-//let publisher = new TopicPublisher(solace, 'test/ws');
-//publisher.run();
-
 var subscriber;
+let publisher = new TopicPublisher(solace, 'test/ws');
+publisher.run();
 
 process.on('SIGINT', function () {
     'use strict';
     subscriber.exit();
-    //publisher.exit();
+    publisher.exit();
 });
 
 app.set('port', 8080);
@@ -27,7 +26,12 @@ app.set('port', 8080);
 app.ws('/test', (ws, req) => {
     function send(msg) { 
         subscriber.log('Received message: ' + msg.getBinaryAttachment() + 'at ' + Date.now() + '. Sent at ' + msg.getSenderTimestamp());
-        ws.send(msg.getBinaryAttachment());
+        
+        try { 
+            ws.send(msg.getBinaryAttachment());
+        } catch (e) {
+            console.log("Error sending, WS closed.");
+        }
     }
 
     subscriber = new TopicSubscriber(solace, 'test/ws', send);
@@ -37,6 +41,12 @@ app.ws('/test', (ws, req) => {
 
     ws.on('message', function (msg) {   
         console.log(msg);
+    });
+});
+
+app.ws('/send', (ws, req) => {
+    ws.on('message', function (msg) {
+        publisher.publish(msg);
     });
 });
 

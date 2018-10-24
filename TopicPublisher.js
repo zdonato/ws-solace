@@ -77,7 +77,6 @@ var TopicPublisher = function (solaceModule, topicName) {
         // define session event listeners
         publisher.session.on(solace.SessionEventCode.UP_NOTICE, function (sessionEvent) {
             publisher.log('=== Successfully connected and ready to publish messages. ===');
-            publisher.publish();
             //publisher.exit();
         });
         publisher.session.on(solace.SessionEventCode.CONNECT_FAILED_ERROR, function (sessionEvent) {
@@ -100,9 +99,9 @@ var TopicPublisher = function (solaceModule, topicName) {
     };
 
     // Publishes one message
-    publisher.publish = function () {
+    publisher.publish = function (messageText) {
         if (publisher.session !== null) {
-            var messageText = 'Sample Message';
+            var messageText = messageText || 'Sample Message';
             var message = solace.SolclientFactory.createMessage();
             message.setDestination(solace.SolclientFactory.createTopicDestination(publisher.topicName));
             message.setBinaryAttachment(messageText);

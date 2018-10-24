@@ -11,3 +11,13 @@ function connect() {
         console.log(evt.data + 'at' + Date.now());
     });
 }
+
+const sendSock = new WebSocket('ws://localhost:8080/send');
+
+sendSock.addEventListener('open', (evt) => {
+    console.log('Send socket opened');
+});
+
+function send() {
+    sendSock.send('Hello World!');
+}
