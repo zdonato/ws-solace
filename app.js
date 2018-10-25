@@ -4,6 +4,7 @@ let expressWs = require('express-ws')(app);
 let TopicSubscriber = require('./TopicSubscriber');
 let TopicPublisher = require('./TopicPublisher');
 let solace = require('solclientjs').debug;
+let path = require('path');
 
 var factoryProps = new solace.SolclientFactoryProperties();
 factoryProps.profile = solace.SolclientFactoryProperties.version10;
@@ -22,6 +23,8 @@ process.on('SIGINT', function () {
 });
 
 app.set('port', 8080);
+
+app.use('/', express.static(path.join(__dirname, './')));
 
 app.ws('/test', (ws, req) => {
     function send(msg) { 
