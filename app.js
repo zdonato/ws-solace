@@ -30,8 +30,9 @@ app.ws('/test', (ws, req) => {
     function send(msg) { 
         subscriber.log('Received message: ' + msg.getBinaryAttachment() + 'at ' + Date.now() + '. Sent at ' + msg.getSenderTimestamp());
         
+        var newString = msg.getSenderTimestamp() + '/' + Date.now() ;
         try { 
-            ws.send(msg.getBinaryAttachment());
+            ws.send(newString);
         } catch (e) {
             console.log("Error sending, WS closed.");
         }
