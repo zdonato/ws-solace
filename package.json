@@ -12,5 +12,9 @@
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
     "solclientjs": "^10.1.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.1.0",
+    "mathjs": "^5.2.2"
   }
 }

@@ -31,14 +31,29 @@ function send() {
 
     interval = setInterval(function(){
         sendSock.send('Hello World!');
-    }, 10)
+    }, 20)
 
     setTimeout(function(){
         clearInterval(interval)
-    }, 10000);
+    }, 20000);
 }
 
 function analyzeRuntime (){
+    var pubToProxArray = [],
+        proxToUIArray = [],
+        meanpubToProx,
+        meanproxToUI,
+        medianpubtoProx,
+        medianproxToUI,
+        modepubtoProx,
+        modeproxToUI,
+        maxpubtoProx,
+        maxproxToUI,
+        minpubtoProx,
+        minproxToUI,
+        stdevpubtoProx,
+        stdevproxToUI;
+
     function TimeRow(number, pubToProx, proxToUI){
         this.MessageNum = 'Message ' + number;
         this.PubToProx = parseInt(pubToProx);
@@ -51,4 +66,27 @@ function analyzeRuntime (){
     });
     
     console.table(parsedTimes);
+
+    parsedTimes.forEach((item) => {
+        pubToProxArray.push(item.PubToProx);
+        proxToUIArray.push(item.ProxToUI);
+    });
+
+    meanpubToProx = math.mean(...pubToProxArray);
+    medianpubtoProx = math.median(...pubToProxArray);
+    modepubtoProx = math.mode(...pubToProxArray);
+    maxpubtoProx = math.max(...pubToProxArray);
+    minpubtoProx = math.min(...pubToProxArray);
+    stdevpubtoProx = math.std(...pubToProxArray);
+
+    console.log(`Statistical analyses Solace --> Proxy (ms) - Mean: ${meanpubToProx}, Median: ${medianpubtoProx}, Mode: ${modepubtoProx}, Max: ${maxpubtoProx}, Min: ${minpubtoProx}, STDev: ${stdevpubtoProx}`);
+
+    meanproxToUI = math.mean(...proxToUIArray);
+    medianproxToUI = math.median(...proxToUIArray);
+    modeproxToUI = math.mode(...proxToUIArray);
+    maxproxToUI = math.max(...proxToUIArray);
+    minproxToUI = math.min(...proxToUIArray);
+    stdevproxToUI = math.std(...proxToUIArray);
+
+    console.log(`Statistical analyses Proxy --> UI (ms) - Mean: ${meanproxToUI}, Median: ${medianproxToUI}, Mode: ${modeproxToUI}, Max: ${maxproxToUI}, Min: ${minproxToUI}, STDev: ${stdevproxToUI}`);
 }
