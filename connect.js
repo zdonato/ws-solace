@@ -27,15 +27,27 @@ sendSock.addEventListener('open', (evt) => {
 });
 
 function send() {
-    var interval;
-
+    var interval,
+        i = 0;
+    // for (var i = 0; i < 1000; i++) {
+    //     sendSock.send('Hello World!' + ' #' + (i+1) + ' ');
+    //     sleep(.01);
+    // }
     interval = setInterval(function(){
-        sendSock.send('Hello World!');
-    }, 20)
+        i++;
+        sendSock.send('Hello World!' + ' #' + i + ' ');
+        console.log('Sent message ' + 'Hello World!' + ' #' + i )
+    }, 25)
 
     setTimeout(function(){
+        i = 0;
         clearInterval(interval)
-    }, 20000);
+    }, 25000);
+}
+
+function sleep(seconds) {
+  var e = new Date().getTime() + (seconds * 1000);
+  while (new Date().getTime() <= e) {}
 }
 
 function analyzeRuntime (){
