@@ -7,7 +7,11 @@ The message used was the seven character string "newtext". For each trial, the t
 
 ###Results
 
-####Messages Missing per Trial (n = 1000 messages)
+####Message Integrity
+
+As you can see in Table 1 below, there were no missing messages in any of the trials for any of the interval groups.
+
+#####[Table 1] Messages Missing per Trial (n = 1000 messages)
 | Trial # | 10 ms   | 15 ms   | 20 ms   | 25 ms   |  
 | ------: | ------: | ------: | ------: | ------: |
 | **1**   | 0       | 0       | 0       | 0       |
@@ -31,17 +35,21 @@ The message used was the seven character string "newtext". For each trial, the t
 | **19**  | 0       | 0       | 0       | 0       |
 | **20**  | 0       | 0       | 0       | 0       |
 
-####Statistics for time between Solace and node proxy server (n = 1000 messages, averaged over 20 trials each)
+
+####Speed
+For the times from Solace to the node server, both mean and deviation increased with the interval. There is also a sharp increase of the maximum value. The times from the node server to the UI also has an increase in mean and deviation, but it is not as steep, ony less than .01 ms. Futhermore their maximimum values stay consistent throught the intervals and do not exceed 6ms. Please look at Table 2 and Table 3 for more details. 
+
+#####[Table 2] Statistics for time between Solace and node proxy server (n = 1000 messages, averaged over 20 trials each)
 
 | Interval (ms) | min (ms) | max (ms) | mode (ms) | median (ms) | mean (ms) | stdev (ms) |
 | ------------: | -------: | -------: | --------: | ----------: | --------: | ---------: |
 | **10**        | 19       | 49       | 32        | 31          | 31.195    | 3.8502     |
 | **15**        | 15       | 153      | 21        | 29          | 34.781    | 24.3904    |
 | **20**        | 15       | 216      | 20        | 24          | 39.219    | 39.2188    |
-| **25**        |  15      | 238      | 20        | 43          | 57.508    | 41.6339    |
+| **25**        | 15       | 238      | 20        | 43          | 57.508    | 41.6339    |
 
 
-####Statistics for time between node proxy server and UI (n = 1000 messages, averaged over 20 trials each)
+#####[Table 3] Statistics for time between node proxy server and UI (n = 1000 messages, averaged over 20 trials each)
 
 | Interval (ms) | min (ms) | max (ms) | mode (ms) | median (ms) | mean (ms) | stdev (ms) |
 | ------------: | -------: | -------: | --------: | ----------: | --------: | ---------: |
