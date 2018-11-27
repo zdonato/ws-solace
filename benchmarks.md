@@ -1,17 +1,18 @@
-## Solace benchmarks using Nodejs and WebSockets
+## Solace benchmarks using NodeJS and WebSockets
 
 ###Summary
 
-We tested tested the time it takes for a message to travel from the Solace publisher to a nodejs proxy server and then from the server to a UI.
-The message used was the seven character string "newtext". For each trial, the total amount of messages was 1,000 and each message was sent in a fixed interval. We varied the value of the interval from 10ms to 25ms and group the results by interval set.   
+We tested the time it takes for a message to travel from the Solace publisher to a NodeJS proxy server and then from that server to a UI.
+
+A trial consists of 1,000 messages of the same twelve character string "Hello World!" being sent at fixed interval. We changed the value of the interval from 10ms to 25ms and tested each trial twenty times.   
 
 ###Results
 
 ####Message Integrity
 
-As you can see in Table 1 below, there were no missing messages in any of the trials for any of the interval groups.
+Throughout the trials, no messages were lost.
 
-#####[Table 1] Messages Missing per Trial (n = 1000 messages)
+#####[Table 1] Messages Missing per Trial
 | Trial # | 10 ms   | 15 ms   | 20 ms   | 25 ms   |  
 | ------: | ------: | ------: | ------: | ------: |
 | **1**   | 0       | 0       | 0       | 0       |
@@ -37,9 +38,11 @@ As you can see in Table 1 below, there were no missing messages in any of the tr
 
 
 ####Speed
-For the times from Solace to the node server, both mean and deviation increased with the interval. There is also a sharp increase of the maximum value. The times from the node server to the UI also has an increase in mean and deviation, but it is not as steep, ony less than .01 ms. Futhermore their maximimum values stay consistent throught the intervals and do not exceed 6ms. Please look at Table 2 and Table 3 for more details. 
+For the times from Solace to the NodeJS server, both mean and deviation sharply increased with the interval. For example, between 10ms and 15ms, the standard deviation increased 633%, from 3.8502ms to 24.3904ms. The standard deviation increased from 12% of the mean to 70% of the mean between the 10ms and 15ms intervals respectively.  
 
-#####[Table 2] Statistics for time between Solace and node proxy server (n = 1000 messages, averaged over 20 trials each)
+The times from the NodeJS server to the UI has a slight increase in mean and deviation, less than .1ms, with a mean of 0.944ms at 10ms and a mean of 1.036ms at 25ms. Furthermore, the maximimum values stayed consistent throughout the intervals and do not exceed 6ms. 
+
+#####[Table 2] Statistics for time between Solace and node proxy server (over 20 trials)
 
 | Interval (ms) | min (ms) | max (ms) | mode (ms) | median (ms) | mean (ms) | stdev (ms) |
 | ------------: | -------: | -------: | --------: | ----------: | --------: | ---------: |
@@ -49,7 +52,7 @@ For the times from Solace to the node server, both mean and deviation increased 
 | **25**        | 15       | 238      | 20        | 43          | 57.508    | 41.6339    |
 
 
-#####[Table 3] Statistics for time between node proxy server and UI (n = 1000 messages, averaged over 20 trials each)
+#####[Table 3] Statistics for time between node proxy server and UI (over 20 trials)
 
 | Interval (ms) | min (ms) | max (ms) | mode (ms) | median (ms) | mean (ms) | stdev (ms) |
 | ------------: | -------: | -------: | --------: | ----------: | --------: | ---------: |
