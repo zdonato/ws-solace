@@ -5,6 +5,7 @@ let TopicSubscriber = require('./TopicSubscriber');
 let TopicPublisher = require('./TopicPublisher');
 let solace = require('solclientjs').debug;
 let path = require('path');
+let XLSX = require('xlsx');
 
 var factoryProps = new solace.SolclientFactoryProperties();
 factoryProps.profile = solace.SolclientFactoryProperties.version10;
@@ -51,6 +52,30 @@ app.ws('/test', (ws, req) => {
 app.ws('/send', (ws, req) => {
     ws.on('message', function (msg) {
         publisher.publish(msg);
+    });
+});
+
+app.ws('/stats', (ws, req) => {
+    ws.on('message', (msg) => {
+        console.log(msg);
+
+        let statsObj = JSON.parse(msg);
+        let filename = statsObj.filename;
+        let trialNumber = statsObj.trialNumber;
+
+        let workbook = XLSX.readFile(path.join(__dirname, 'trials.xlsx'));
+        let sheetName = workbook.SheetNames[0]; 
+        let worksheet = workbook.Sheets[sheetName];
+        let pubtoprox = statsObj.pubToProx;
+        let proxToUI = statsObj.proxToUI;
+
+        let output = [{ trial: trialNumber, missing: statsObj.missing, ...pubtoprox, ...proxToUI}];
+
+        console.log(output);
+
+        XLSX.utils.sheet_add_json(worksheet, output, { origin: -1, skipHeader: true });
+                                                        
+        XLSX.writeFile(workbook, path.join(__dirname, 'trials.xlsx'));
     });
 });
 

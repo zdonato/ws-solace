@@ -1,4 +1,5 @@
 var runTimes = []
+var trialNumber = 1;
 function connect() {
     console.log("Connecting to ws...");
     const socket = new WebSocket('ws://localhost:8080/test');
@@ -15,12 +16,13 @@ function connect() {
             proxUITime = parseInt(now) - parseInt(times[1]),
             runtime = pubProxTime + '/' + proxUITime;
 
-        console.log('Time: ' + runtime);
+        //console.log('Time: ' + runtime);
         runTimes.push(runtime);
     });
 }
 
 const sendSock = new WebSocket('ws://localhost:8080/send');
+const statsSock = new WebSocket('ws://localhost:8080/stats');
 
 sendSock.addEventListener('open', (evt) => {
     console.log('Send socket opened');
@@ -42,7 +44,7 @@ function send() {
     setTimeout(function(){
         i = 0;
         clearInterval(interval)
-    }, 25000);
+    }, 250);
 }
 
 function sleep(seconds) {
@@ -101,4 +103,30 @@ function analyzeRuntime (){
     stdevproxToUI = math.std(...proxToUIArray);
 
     console.log(`Statistical analyses Proxy --> UI (ms) - Mean: ${meanproxToUI}, Median: ${medianproxToUI}, Mode: ${modeproxToUI}, Max: ${maxproxToUI}, Min: ${minproxToUI}, STDev: ${stdevproxToUI}`);
+
+    let statsObj = {
+        missing: (1000 - parsedTimes.length),
+        trialNumber,
+        pubToProx: {
+            meanPub: meanpubToProx,
+            medianPub: medianpubtoProx,
+            modePub: modepubtoProx[0],
+            maxPub: maxpubtoProx,
+            minPub: minpubtoProx,
+            stddevPub: stdevpubtoProx
+        },
+        proxToUI: {
+            meanProx: meanproxToUI,
+            medianProx: medianproxToUI,
+            modeProx: modeproxToUI[0],
+            maxProx: maxproxToUI,
+            minProx: minproxToUI,
+            stddevProx: stdevproxToUI
+        }
+    };
+
+    statsSock.send(JSON.stringify(statsObj));
+
+    runTimes = [];
+    trialNumber++;
 }
