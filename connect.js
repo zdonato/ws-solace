@@ -29,18 +29,22 @@ sendSock.addEventListener('open', (evt) => {
 });
 
 function send() {
-    var interval,
-        i = 0;
-    interval = setInterval(function(){
-        i++;
-        if (i > 1000) {
-            i = 0;
-            window.clearInterval(interval);
-        } else {
-            sendSock.send('Hello World!' + ' #' + i + ' ');
-            console.log('Sent message ' + 'Hello World!' + ' #' + i );
-        }
-    }, 10)
+    var interval;
+        // i = 0;
+    // interval = setInterval(function(){
+    //     i++;
+    //     if (i > 1000) {
+    //         i = 0;
+    //         window.clearInterval(interval);
+    //     } else {
+    //         sendSock.send('Hello World!' + ' #' + i + ' ');
+    //         console.log('Sent message ' + 'Hello World!' + ' #' + i );
+    //     }
+    // }, 10)
+    for (var i = 0; i < 1000; i++){
+        sendSock.send('Hello World!' + ' #' + (i+1) + ' ');
+        console.log('Sent message ' + 'Hello World!' + ' #' + (i+1) );
+    }
 }
 
 function sleep(seconds) {
